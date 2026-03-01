@@ -39,7 +39,6 @@ Visualize complex logic recursively. The flowchart mode completely bypasses text
 **Frontend:**
 - React 19 + TypeScript
 - Vite
-- Monaco Editor
 - React Markdown
 
 **Backend:**
