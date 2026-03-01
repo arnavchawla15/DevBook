@@ -51,7 +51,7 @@ export function AuthPage({ onLogin }: AuthPageProps) {
                     }}>
                         <Sparkles size={32} color="#fff" />
                     </div>
-                    <h2 style={{ fontSize: '28px', margin: 0 }}>CodeExplainer</h2>
+                    <h2 style={{ fontSize: '28px', margin: 0 }}>DevBook</h2>
                     <p style={{ color: 'var(--text-secondary)', textAlign: 'center', margin: 0 }}>
                         The interactive workspace to understand, visualize, and map complex code logic.
                     </p>

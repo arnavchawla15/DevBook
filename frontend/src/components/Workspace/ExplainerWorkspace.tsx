@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Lightbulb, Activity, Network } from 'lucide-react';
 
 interface ExplainerWorkspaceProps {
-    mode: 'line' | 'block' | 'file';
+    mode: 'line' | 'block' | 'flowchart';
     insight?: string;
     isLoading?: boolean;
 }
@@ -17,21 +17,21 @@ const MindMapNode = ({ node }: { node: any }) => {
         <div style={{ display: 'flex', alignItems: 'center', gap: '30px' }}>
             <div style={{ position: 'relative' }}>
                 <div style={{
-                    background: '#474b57', 
-                    color: '#f3f4f6', 
-                    padding: '12px 20px', 
-                    borderRadius: '8px', 
-                    fontSize: '13px', 
+                    background: '#474b57',
+                    color: '#f3f4f6',
+                    padding: '12px 20px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
                     lineHeight: '1.4',
-                    maxWidth: '300px', 
-                    boxShadow: '0 4px 6px rgba(0,0,0,0.1)', 
-                    zIndex: 2, 
+                    maxWidth: '300px',
+                    boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+                    zIndex: 2,
                     position: 'relative',
                     border: '1px solid #52596d'
                 }}>
                     {node.name}
                 </div>
-                
+
                 {hasChildren && (
                     <button
                         onClick={() => setIsExpanded(!isExpanded)}
@@ -94,20 +94,34 @@ export function ExplainerWorkspace({ mode, insight, isLoading }: ExplainerWorksp
     let mainText = insight || '';
     let treeData = null;
 
-    if (insight && /MINDMAP_JSON/i.test(insight)) {
-        // 1. Split the text at the heading
-        const parts = insight.split(/MINDMAP_JSON\**:?/i);
-        mainText = parts[0].trim();
-        
-        // 2. Aggressively extract only the JSON from the second half
-        const rawJsonSection = parts[1] || '';
-        const jsonMatch = rawJsonSection.match(/\{[\s\S]*\}/); 
-        
-        if (jsonMatch) {
-            try {
-                treeData = JSON.parse(jsonMatch[0]);
-            } catch (e) {
-                console.error("Failed to parse AI JSON hierarchy", e);
+    if (insight) {
+        if (mode === 'flowchart') {
+            // For flowchart mode, the entire insight is expected to be JSON. Let's try to extract it aggressively.
+            const jsonMatch = insight.match(/\{[\s\S]*\}/);
+            if (jsonMatch) {
+                try {
+                    treeData = JSON.parse(jsonMatch[0]);
+                    mainText = ""; // Clear text if we successfully extracted the tree
+                } catch (e) {
+                    console.error("Failed to parse AI JSON hierarchy in flowchart mode", e);
+                }
+            }
+        } else if (/MINDMAP_JSON/i.test(insight)) {
+            // Legacy/fallback parsing for other modes if they somehow return MINDMAP_JSON
+            // 1. Split the text at the heading
+            const parts = insight.split(/MINDMAP_JSON\**:?/i);
+            mainText = parts[0].trim();
+
+            // 2. Aggressively extract only the JSON from the second half
+            const rawJsonSection = parts[1] || '';
+            const jsonMatch = rawJsonSection.match(/\{[\s\S]*\}/);
+
+            if (jsonMatch) {
+                try {
+                    treeData = JSON.parse(jsonMatch[0]);
+                } catch (e) {
+                    console.error("Failed to parse AI JSON hierarchy", e);
+                }
             }
         }
     }
@@ -138,7 +152,7 @@ export function ExplainerWorkspace({ mode, insight, isLoading }: ExplainerWorksp
                         <h4 style={{ color: 'var(--text-muted)', fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '30px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                             <Network size={14} color="var(--accent-primary)" /> Interactive Logic Tree
                         </h4>
-                        
+
                         <div style={{ display: 'flex', minWidth: 'max-content', padding: '10px 20px' }}>
                             <MindMapNode node={treeData} />
                         </div>

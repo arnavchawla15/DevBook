@@ -64,7 +64,7 @@ async def ingest_code():
     return {"status": "Failed", "message": "No relevant source files found."}
 
 @app.post("/query")
-async def query_code(user_question: str, mode: str = "file"):
+async def query_code(user_question: str, mode: str = "flowchart"):
     try:
         results = collection.query(query_texts=[user_question], n_results=1)
         context = "\n".join(results['documents'][0]) if results['documents'] else ""
@@ -72,24 +72,12 @@ async def query_code(user_question: str, mode: str = "file"):
         # Truncate context to keep Groq happy and fast
         context = context[:4000] 
         
-        mode_instructions = {
-            "line": "Focus strictly on the syntax, immediate mechanics, and exact variables of the specific line(s) provided. Keep it extremely micro-level.",
-            "block": "Focus on the algorithms, loops, conditionals, and data transformations within this specific code block.",
-            "file": "Focus on the overarching architecture, exports, imports, and how this file fits into the broader system context."
-        }
-        
-        prompt = f"""
-        Act as a senior developer. Review the code provided below.
-        CRITICAL: The depth of your explanation MUST scale dynamically. For large files, you MUST break the logic down into detailed sub-branches.
-
-        FORMAT YOUR RESPONSE EXACTLY WITH THESE HEADINGS (Do not use any other headings):
-        **The Core Purpose**: What is this code trying to achieve?
-        **Input/Output**: What goes in and what comes out?
-        **Key Logic**: Briefly explain the main mechanics.
-        **Dependencies**: List any major libraries or modules being utilized.
+        if mode == "flowchart":
+            prompt = f"""
+        Act as an AI architect. Focus strictly on hierarchical logic.
         
         **MINDMAP_JSON**:
-        CRITICAL: OUTPUT NOTHING BUT THE RAW JSON OBJECT BELOW THIS HEADING. Do not write "Here is the JSON" or use markdown code blocks. Start immediately with {{.
+        CRITICAL: OUTPUT NOTHING BUT THE RAW JSON OBJECT BELOW THIS HEADING. Do not write introductory text, explanatory paragraphs, or markdown code blocks. Start immediately with {{.
         It must be hierarchical (use "children" arrays for sub-steps).
         Example format:
         {{
@@ -103,13 +91,36 @@ async def query_code(user_question: str, mode: str = "file"):
             ]
         }}
 
-        MODE INSTRUCTION ({mode.upper()} MODE):
-        {mode_instructions.get(mode, mode_instructions['file'])}
-        
-        CONTEXT FROM PROJECT MEMORY:
+        CONTEXT:
         {context}
-        
-        USER CODE/QUESTION:
+
+        CODE/QUESTION:
+        {user_question}
+        """
+        elif mode == "line":
+            prompt = f"""
+        Act as a step-by-step Code Visualizer.
+        Provide an extremely concise breakdown of execution. No filler words, no introductory paragraphs. Just dry data flow.
+        For each variable, quickly state the value before and after, and exactly what caused the change. Use short, direct steps.
+        DO NOT include descriptive headings like 'Core Purpose' or 'Dependencies'. Keep it as concise as possible.
+
+        CONTEXT:
+        {context}
+
+        CODE:
+        {user_question}
+        """
+        else: # block
+            prompt = f"""
+        Explain the purpose of the provided code.
+        Format your response as a very short summary explaining what the code does, using bullet points.
+        Limit the entire response to 2-3 concise summary points maximum.
+        DO NOT write large paragraphs, and DO NOT use descriptive headings like 'Key Logic' or 'Input/Output'.
+
+        CONTEXT:
+        {context}
+
+        CODE:
         {user_question}
         """
         

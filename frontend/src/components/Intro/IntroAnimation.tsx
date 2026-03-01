@@ -4,7 +4,7 @@ interface IntroAnimationProps {
     onComplete: () => void;
 }
 
-const WORDS = ["Understand.", "Visualize.", "Master.", "CodeExplainer."];
+const WORDS = ["Understand.", "Visualize.", "Master.", "DevBook."];
 
 export function IntroAnimation({ onComplete }: IntroAnimationProps) {
     const [wordIndex, setWordIndex] = useState(0);
