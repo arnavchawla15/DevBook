@@ -38,7 +38,7 @@ async def ingest_code():
     docs = []
     metadatas = []
     ids = []
-    count = 0
+    count: int = 0
     
     for root_dir, dirs, files in os.walk("../"):
         if any(x in root_dir for x in ["venv", ".git", "node_modules", "__pycache__"]):

@@ -14,12 +14,37 @@ function App() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   // Updated the welcome text to match the new brand
-  const [codeContent, setCodeContent] = useState(`// Welcome to DevBook Workspace
-// Paste your code here to begin understanding it dynamically.
+  const [codeContent, setCodeContent] = useState(`public class OrderProcessor {
+    
+    public static String processOrder(User user, Cart cart) {
+        // 1. Validate inputs
+        if (user == null || !user.isLoggedIn()) {
+            return "Error: User not authenticated";
+        }
+        if (cart == null || cart.getItems().isEmpty()) {
+            return "Error: Cart is empty";
+        }
 
-function analyzeCode(input: string) {
-  const result = parseAST(input);
-  return generateInteractiveBreakdown(result);
+        // 2. Calculate subtotal
+        double subtotal = 0.0;
+        for (int i = 0; i < cart.getItems().size(); i++) {
+            Item item = cart.getItems().get(i);
+            subtotal += item.getPrice() * item.getQuantity();
+        }
+
+        // 3. Apply Premium Member discount
+        double finalTotal = subtotal;
+        if (user.isPremium()) {
+            finalTotal = subtotal * 0.90; // 10% discount applied
+        }
+
+        // 4. Apply State Tax
+        double taxRate = 0.08;
+        finalTotal = finalTotal + (finalTotal * taxRate);
+
+        // 5. Finalize and return
+        return String.format("Success: Order processed. Total: $%.2f", finalTotal);
+    }
 }`);
 
   const handleRunCode = async (targetMode?: 'line' | 'block' | 'flowchart') => {
