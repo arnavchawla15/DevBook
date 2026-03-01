@@ -96,6 +96,16 @@ npm run dev
 ## 🤝 Contributing
 Have an idea to make DevBook even better? Feel free to fork the repository, create a feature branch, and open a Pull Request! The UI thrives on aesthetic glassmorphism and the backend relies on aggressive prompt constraints.
 
+---
+
+## 👥 The Builders
+
+- **Arnav Chawla** – Deployment & Backend
+- **Vivaan Veer Mahatha** – AI & Database Management, Backend
+- **Ganesh Singh** – Frontend
+- **Manya Sharma** – Frontend & Design
+- **Tanmay Sahai** – PPT & Documentation
+
 <div align="center">
   <i>Built to read code at the speed of thought.</i>
 </div>
