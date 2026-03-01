@@ -53,7 +53,7 @@ function App() {
     const currentMode = targetMode || mode;
 
     // Determine the precise endpoint relative to targetMode
-    const endpoint = `http://localhost:8000/query?user_question=${encodeURIComponent(codeContent)}&mode=${currentMode}`;
+    const endpoint = `https://devbook-api-v2.loca.lt/query?user_question=${encodeURIComponent(codeContent)}&mode=${currentMode}`;
 
     setIsAnalyzing(true);
     setAiInsight(""); // Clear previous insight so the loading state looks clean
@@ -62,7 +62,8 @@ function App() {
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
-          'Accept': 'application/json'
+          'Accept': 'application/json',
+          'Bypass-Tunnel-Reminder': 'true'
         }
       });
 
