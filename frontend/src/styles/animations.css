@@ -1,0 +1,107 @@
+/* Floating shapes animation for the background */
+.animated-bg-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    overflow: hidden;
+    background: linear-gradient(to bottom right, #0f111a, #1a1a2e);
+}
+
+.shape-1,
+.shape-2,
+.shape-3 {
+    position: absolute;
+    filter: blur(100px);
+    border-radius: 50%;
+    opacity: 0.4;
+    animation: float 20s infinite ease-in-out alternate;
+}
+
+.shape-1 {
+    width: 60vw;
+    height: 60vw;
+    background: radial-gradient(circle, var(--accent-primary) 0%, rgba(99, 102, 241, 0) 70%);
+    top: -20vh;
+    left: -20vw;
+    animation-delay: 0s;
+}
+
+.shape-2 {
+    width: 50vw;
+    height: 50vw;
+    background: radial-gradient(circle, var(--accent-secondary) 0%, rgba(139, 92, 246, 0) 70%);
+    bottom: -20vh;
+    right: -10vw;
+    animation-duration: 25s;
+    animation-delay: -5s;
+}
+
+.shape-3 {
+    width: 40vw;
+    height: 40vw;
+    background: radial-gradient(circle, #3b82f6 0%, rgba(59, 130, 246, 0) 70%);
+    /* Blueish */
+    top: 30vh;
+    left: 40vw;
+    animation-duration: 18s;
+    animation-delay: -10s;
+}
+
+@keyframes float {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    33% {
+        transform: translate(30px, -50px) scale(1.1);
+    }
+
+    66% {
+        transform: translate(-20px, 20px) scale(0.9);
+    }
+
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+}
+
+/* Transitions */
+.fade-in {
+    animation: fadeIn var(--transition-normal) forwards;
+}
+
+.slide-up {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideUp var(--transition-normal) forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.glow-hover {
+    transition: all var(--transition-fast);
+}
+
+.glow-hover:hover {
+    box-shadow: var(--shadow-glow);
+    border-color: var(--accent-primary);
+    transform: translateY(-2px);
+}

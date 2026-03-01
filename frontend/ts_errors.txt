@@ -1,0 +1,5 @@
+src/App.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/components/Editor/CodeEditor.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/components/Editor/CodeEditor.tsx(7,28): error TS6133: 'code' is declared but its value is never read.
+src/components/Workspace/ExplainerWorkspace.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/components/Workspace/ExplainerWorkspace.tsx(4,86): error TS6133: 'Bug' is declared but its value is never read.
