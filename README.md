@@ -101,7 +101,7 @@ Have an idea to make DevBook even better? Feel free to fork the repository, crea
 
 - **Arnav Chawla** – Deployment & Backend
 - **Vivaan Veer Mahatha** – AI & Database Management, Backend
-- **Ganesh Singh** – Frontend
+- **Ganesh Singh** – Frontend & Backend
 - **Manya Sharma** – Frontend & Design
 - **Tanmay Sahai** – PPT & Documentation
 
